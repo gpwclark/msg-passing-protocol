@@ -13,8 +13,8 @@ defmodule KVRegistry.Test do
     KV.Registry.create(registry, "shopping")
     assert {:ok, bucket} = KV.Registry.lookup(registry, "shopping")
 
-    KV.Bucket.put(bucket, "milk", 1)
-    assert KV.Bucket.get(bucket, "milk") == 1
+    KV.Bucket.put(bucket, "milk")
+    assert KV.Bucket.get(bucket, 0) == "milk"
   end
 
   test "removes bucket on exit", %{registry: registry} do

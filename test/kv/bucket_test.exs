@@ -10,14 +10,8 @@ defmodule KV.BucketTest do
 
   test "stores values by key", %{bucket: bucket} do
     IO.puts("Begin bucket test")
-    assert KV.Bucket.get(bucket, "milk") == nil
-
-    KV.Bucket.put(bucket, "milk", 3)
-    assert KV.Bucket.get(bucket, "milk") == 3
-
-    the_val = KV.Bucket.delete(bucket, "milk")
-    IO.puts("hello val: #{the_val}")
-    assert KV.Bucket.get(bucket, "milk") == nil
+    KV.Bucket.put(bucket, "milk")
+    assert KV.Bucket.get(bucket, 0) == "milk"
   end
 
   test "are temporary workers" do
