@@ -26,6 +26,8 @@ defmodule KV.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       # {:credo, "~> 0.5", only: [:dev, :test]},
       # {:dogma, "~> 0.1", only: [:dev]}
+      {:plug_cowboy, "~> 2.0"}, # This will pull in Plug AND Cowboy
+      {:poison, "~> 3.1"} # Latest version as of this writing
     ]
   end
 end

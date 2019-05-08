@@ -16,6 +16,8 @@ defmodule KV.Supervisor do
 
   def init(:ok) do
     children = [
+      {Task.Supervisor, name: KVServer.Supervisor},
+      {Task, fn -> KVServer.start_recv(8787) end},
       {DynamicSupervisor, name: KV.BucketSupervisor, strategy: :one_for_one},
       {KV.Registry, name: KV.Registry}
     ]
