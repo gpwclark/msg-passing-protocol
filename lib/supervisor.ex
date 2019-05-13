@@ -16,9 +16,16 @@ defmodule KV.Supervisor do
 
   def init(:ok) do
     children = [
-      {Task.Supervisor, name: KVServer.Supervisor},
-      {Task, fn -> KVServer.start_recv(8787) end},
+      {Task.Supervisor, name: KV.ServerSupervisor},
+      #for pub
+      Supervisor.child_spec({Task, fn -> KV.Server.start_recv(8787) end}, restart: :transient, id: "PublicationServer"),
+      #TODO Supervisor.child_spec({Task, fn -> KV.Server.start_recv(7878, :sub) end}, restart: :transient, id: "SubscriptionServer"),
+      # {Task, fn -> KV.Server.start_recv(8787) end},
+      #for sub
+      #Supervisor.child_spec({Task, fn -> KV.Server.start_recv(7878) end}, restart: :permanent, id: "SubServer"),
       {DynamicSupervisor, name: KV.BucketSupervisor, strategy: :one_for_one},
+      #registry of buckets. buckets are where all the publications go.
+      #subscribers. like. buckets.
       {KV.Registry, name: KV.Registry}
     ]
 
