@@ -9,7 +9,7 @@ defmodule KV.BucketTest do
   end
 
   test "stores values by key", %{bucket: bucket} do
-    IO.puts("Begin bucket test")
+    Logger.info("Begin bucket test")
     KV.Bucket.put(bucket, "milk")
     assert KV.Bucket.get(bucket, 0) == "milk"
   end

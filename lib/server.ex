@@ -36,28 +36,10 @@ defmodule KV.Server do
 
   defp read_line(socket) do
     {ok, data} = :gen_tcp.recv(socket, 0)
-    {json, payload} = parse(data)
+    {json, payload} = Parser.parse(data)
     Logger.info "json " <> json
     Logger.info "payload " <> payload
     data
-  end
-
-  defp parse(data) do
-    {json, payload} = parse(hd(data), tl(data), <<>>)
-    json = Poison.decode!(json)
-  end
-
-  defp parse(head, tail, buf) do
-    Logger.info("buf as w eknow it #{inspect buf}")
-    case head do
-      {?{} ->
-        Logger.info("the head! #{inspect head}")
-        parse(hd(tail), tl(tail), buf <> head)
-      {?}} ->
-        Logger.info("the tail! #{inspect head}")
-      _ ->
-        Logger.info("everyday I'm bufferin' #{inspect head}")
-    end
   end
 
   defp write_line(line, socket) do
