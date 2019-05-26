@@ -5,11 +5,15 @@ defmodule KV.Parser do
   primitive json stream parser
   """
 
+  def parse(data) do
+    {json, binary_data} = parse(data, <<>>, :begin)
+  end
+
   @doc """
   parses non nested json object from following binary data,
   e.g. {json stuff}binary data
   """
-  def parse(<<byte::size(8), data::binary>>, current, state) do
+  defp parse(<<byte::size(8), data::binary>>, current, state) do
     case state do
       :begin ->
         parse(data, current <> <<byte>>, :json)

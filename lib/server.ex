@@ -34,10 +34,16 @@ defmodule KV.Server do
     serve(socket)
   end
 
+  defmodule PayloadHeader do
+    @derive [Poison.Encoder]
+    defstruct [:topic, :payload_size, :checksum]
+  end
+
   defp read_line(socket) do
     {ok, data} = :gen_tcp.recv(socket, 0)
-    {json, payload} = Parser.parse(data)
-    Logger.info "json " <> json
+    {json, payload} = KV.Parser.parse(data)
+    json = Poison.decode!(json, as: %PayloadHeader{})
+    Logger.info "json #{inspect json}"
     Logger.info "payload " <> payload
     data
   end
